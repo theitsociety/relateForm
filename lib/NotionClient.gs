@@ -63,7 +63,13 @@ function prepareNotionPayload(responseObject, FIELD_MAPPINGS){
       properties[aMapping.mapping] = {
         "multi_select": prepareMultiSelect(responseObject[key])
       };
-    } 
+    }  else if (aMapping.type == 'relation' && responseObject[key]) {
+      properties[aMapping.mapping] = { 
+        "relation": [{
+          "id": responseObject[key] 
+        }] 
+      };
+    }
   }
 
   return properties;
