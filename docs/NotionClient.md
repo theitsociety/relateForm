@@ -19,7 +19,7 @@ Functions
 }
 ```
 
-  - Supported mapping `type` values: `title`, `email`, `select`, `number`, `url`, `multi_select`, `rich_text`.
+  - Supported mapping `type` values: `title`, `email`, `select`, `number`, `url`, `multi_select`, `rich_text`. `relation`
   - Returns: An object usable as the `properties` attribute when creating or updating Notion pages.
   - Example:
 
