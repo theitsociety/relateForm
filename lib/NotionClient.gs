@@ -25,17 +25,17 @@ function prepareNotionPayload(responseObject, FIELD_MAPPINGS){
   const properties = {}
 
   for (const [key, aMapping] of Object.entries(FIELD_MAPPINGS)) {
-    if (aMapping.type == 'title') {
+    if (aMapping.type == 'title' && responseObject[key]) {
       properties[aMapping.mapping] = {
         'title': [{
           'text': {
-            'content': (responseObject[key]||'').toString()
+            'content': responseObject[key].toString()
           }
         }]
       }
-    } else if (aMapping.type == 'email') {
+    } else if (aMapping.type == 'email' && responseObject[key]) {
       properties[aMapping.mapping] = {
-        'email': (responseObject[key]||'').toString()      
+        'email': responseObject[key].toString()      
       }
     } else if (aMapping.type == 'rich_text') {
       properties[aMapping.mapping] = {
@@ -45,19 +45,19 @@ function prepareNotionPayload(responseObject, FIELD_MAPPINGS){
           }
         }]
       }
-    }  else if (aMapping.type == 'select') {
+    }  else if (aMapping.type == 'select' && responseObject[key]) {
       properties[aMapping.mapping] = {
         'select': {
-          'name': (responseObject[key]||'').toString()
+          'name': responseObject[key].toString()
         }
       }
     }  else if (aMapping.type == 'number') {
       properties[aMapping.mapping] = {
         'number': Number(responseObject[key]||-1)      
       }
-    }  else if (aMapping.type == 'url') {
+    }  else if (aMapping.type == 'url' && responseObject[key]) {
       properties[aMapping.mapping] = {
-        'url': (responseObject[key]||'').toString()      
+        'url': responseObject[key].toString()      
       }
     }  else if (aMapping.type == 'multi_select') {
       properties[aMapping.mapping] = {
