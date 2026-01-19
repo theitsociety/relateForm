@@ -126,9 +126,9 @@ function prepareNotionPayload(respondentEmail, responseObject){
   // Append relation if a relevant registration found
   if (respondentEmail) {
     const filter = {"filter": {"property": "Email Address","rich_text": {"equals" : respondentEmail}}};
-    const existing_registrations = Utils.filterNotionDatabase(NOTION_REGISTRATION_DATABASE_ID, filter, NOTION_BEARER);
-    if(existing_registrations.length > 0){
-      responseObject['Registered Name'] = existing_registrations[0]['id'];
+    const existing_registration = (Utils.filterNotionDatabase(NOTION_REGISTRATION_DATABASE_ID, filter, NOTION_BEARER) || [])[0];
+    if(existing_registration){
+      responseObject['Registered Name'] = existing_registration['id'];
     }
   }
   return Utils.prepareNotionPayload(responseObject, FIELD_MAPPINGS)
