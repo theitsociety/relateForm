@@ -206,12 +206,24 @@ function onSubmit(e) {
     const responseObject = Utils.formResponseToObject(response);
     const payload = prepareNotionPayload(respondentEmail, responseObject);    
     // Load
-    Utils.postDataToDiscord(DISCORD_URL, respondentEmail, responseObject, DISCORD_FORM_TITLE);
-    Utils.createNotionPageV2(payload, NOTION_DATABASE_ID, NOTION_BEARER);
+    let existing_profile;
+    if (respondentEmail) {    
+      const filter = {"filter": {"property": "Email Address","rich_text": {"equals" : respondentEmail}}};
+      existing_profile = (Utils.filterNotionDatabase(NOTION_DATABASE_ID, filter, NOTION_BEARER) || [])[0];
+    }
+    if (existing_profile) {
+      Utils.updateNotionPage(existing_profile['id'], payload, NOTION_BEARER);
+    } else {
+      // Discord message is only for new registrations
+      Utils.postDataToDiscord(DISCORD_URL, respondentEmail, responseObject, DISCORD_FORM_TITLE);
+      // Notion document requires respondentEmail
+      if (respondentEmail) {
+        Utils.createNotionPageV2(payload, NOTION_DATABASE_ID, NOTION_BEARER);
+      }
+    } 
   } catch (err) {
     Logger.log('Failed with error %s', err.toString());
   }
-
 };
 
 /**
