@@ -112,10 +112,9 @@ function createNotionPageV2 (properties, database_id, bearer) {
  * Updates a Notion Document
  * 
  * @param {string} page_id Notion Document Id available in Notion page URL
- * @param {object} payload To be updated data in JSON format
+ * @param {object} properties To be updated data in JSON format
  * Sample
- *  * {
- *    "properties": {
+ *  {
  *      "Groups": {
  *         "multi_select": [
  *           {
@@ -126,15 +125,14 @@ function createNotionPageV2 (properties, database_id, bearer) {
  *           }
  *         ]
  *       }
- *    }
- * }
+ *  }
  * 
  * @param {string} bearer Connection auth generated on Notion Internal Integration Secret 
  * Notion Space -> ... -> Connnections -> Add Connection -> Develop Integration -> New Integration -> Internal Integration Secret
  * 
  * @return {object} API Response 
  */
-function updateNotionPage (page_id, payload, bearer) {
+function updateNotionPage (page_id, properties, bearer) {
   const url = `https://api.notion.com/v1/pages/${page_id}`;
     var options = {
       'muteHttpExceptions': true,
@@ -144,7 +142,7 @@ function updateNotionPage (page_id, payload, bearer) {
         "Content-Type": "application/json",
         "Notion-Version": "2022-06-28",
       },
-      "payload": JSON.stringify(payload)
+      "payload": JSON.stringify({ properties })
 
     };
     const response = UrlFetchApp.fetch(url, options);
